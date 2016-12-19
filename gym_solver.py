@@ -60,7 +60,7 @@ def train_network(env):
 
     # Simulation
     local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, 'config')
+    config_path = os.path.join(local_dir, 'gym_config')
     pop = population.Population(config_path)
     # Load checkpoint
     if args.checkpoint:
