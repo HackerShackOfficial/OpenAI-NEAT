@@ -97,7 +97,7 @@ def train_network(env):
     for i in range(100):
         simulate_species(winner_net, env, 1, args.max_steps, render=True)
 
-my_env = gym.make('MsPacman-ram-v0')
+my_env = gym.make('CartPole-v0')
 print "Input Nodes: %s" % str(len(my_env.observation_space.high))
 print "Output Nodes: %s" % str(my_env.action_space.n)
 train_network(my_env)
