@@ -5,6 +5,14 @@ import numpy as np
 from neat import nn, population, statistics, parallel
 
 
+### User Params ###
+
+# The name of the game to solve
+game_name = 'CartPole-v0'
+
+### End User Params ###
+
+
 parser = argparse.ArgumentParser(description='OpenAI Gym Solver')
 parser.add_argument('--max-steps', dest='max_steps', type=int, default=1000,
                     help='The max number of steps to take per genome (timeout)')
@@ -97,7 +105,7 @@ def train_network(env):
     for i in range(100):
         simulate_species(winner_net, env, 1, args.max_steps, render=True)
 
-my_env = gym.make('CartPole-v0')
+my_env = gym.make(game_name)
 print "Input Nodes: %s" % str(len(my_env.observation_space.high))
 print "Output Nodes: %s" % str(my_env.action_space.n)
 train_network(my_env)

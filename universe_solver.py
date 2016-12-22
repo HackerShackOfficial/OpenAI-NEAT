@@ -9,6 +9,9 @@ from neat import nn, population, statistics, parallel
 
 ### User Params ###
 
+# The name of the game to solve
+game_name = 'flashgames.DriftRunners-v0'
+
 # Change these to define the available actions in the game
 action_sheet = [('KeyEvent', 'ArrowUp'), ('KeyEvent', 'ArrowLeft'), ('KeyEvent', 'ArrowRight')]
 
@@ -169,7 +172,7 @@ def train_network(env):
     for i in range(100):
         simulate_species(winner_net, env, 1, args.max_steps, render=True)
 
-my_env = gym.make('flashgames.DriftRunners-v0')
+my_env = gym.make(game_name)
 my_env.configure(remotes=1)  # automatically creates a local docker container
 observation_n = my_env.reset()
 if args.render:
