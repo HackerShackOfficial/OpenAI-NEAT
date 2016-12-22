@@ -8,9 +8,9 @@ stagnation_type      = DefaultStagnation
 reproduction_type    = DefaultReproduction
 
 [phenotype]
-input_nodes          = 128
+input_nodes          = 4
 hidden_nodes         = 0
-output_nodes         = 9
+output_nodes         = 2
 initial_connection   = unconnected
 max_weight           = +30
 min_weight           = -30
@@ -20,7 +20,7 @@ weight_stdev         = 1.0
 
 [genetic]
 pop_size                = 150
-max_fitness_threshold   = 6000
+max_fitness_threshold   = 1000
 prob_add_conn = 0.988
 prob_add_node = 0.25
 prob_delete_conn = 0.146

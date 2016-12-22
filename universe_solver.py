@@ -7,10 +7,22 @@ from scipy import ndimage
 from neat import nn, population, statistics, parallel
 
 
-#action_sheet = [('KeyEvent', 'ArrowUp'), ('KeyEvent', 'ArrowDown'), ('KeyEvent', 'ArrowLeft'),
-#                ('KeyEvent', 'ArrowRight'), ('KeyEvent', 'space')]
+### User Params ###
 
+# Change these to define the available actions in the game
 action_sheet = [('KeyEvent', 'ArrowUp'), ('KeyEvent', 'ArrowLeft'), ('KeyEvent', 'ArrowRight')]
+
+# Rules for actions that can't be taken at the same time
+rules = [['ArrowLeft', 'ArrowRight'], ['ArrowUp', 'ArrowDown']]
+
+### End User Params ###
+
+
+""" Sample action sheet
+action_sheet = [('KeyEvent', 'ArrowUp'), ('KeyEvent', 'ArrowDown'), ('KeyEvent', 'ArrowLeft'),
+                ('KeyEvent', 'ArrowRight'), ('KeyEvent', 'space')]
+"""
+
 
 parser = argparse.ArgumentParser(description='OpenAI Gym Solver')
 parser.add_argument('--max-steps', dest='max_steps', type=int, default=1000,
@@ -50,17 +62,34 @@ def block_mean(ar, fact):
 
 
 def get_actions(outputs):
-    actions = []
+    actions = {}
+
     for i in range(len(outputs)):
         if outputs[i] > 0:
-            actions.append(action_sheet[i] + (True,))
+            actions[action_sheet[i][1]] = action_sheet[i] + (True,)
         else:
-            actions.append(action_sheet[i] + (False,))
-    return actions
+            actions[action_sheet[i][1]] = action_sheet[i] + (False,)
 
+    for rule in rules:
+        next_action = True
+        for key in rule:
+            if key in actions:
+                next_action = actions[key][2] and next_action
+            elif len(rule) == 2: # if one key is missing in a rule of 2, keep the value
+                next_action = False
 
-def check_rules():
-    pass
+        if next_action is True:
+            for key in rule:
+                if key in actions:
+                    l = list(actions[key])
+                    l[2] = False
+                    actions[key] = tuple(l)
+
+    arr = []
+    for key in actions:
+        arr.append(actions[key])
+
+    return arr
 
 
 def simulate_species(net, env, episodes=1, steps=5000, render=False):
@@ -113,11 +142,7 @@ def train_network(env):
     if args.checkpoint:
         pop.load_checkpoint(args.checkpoint)
     # Start simulation
-    #if args.render:
     pop.run(eval_fitness, args.generations)
-    #else:
-    #    pe = parallel.ParallelEvaluator(args.numCores, worker_evaluate_genome)
-    #    pop.run(pe.evaluate, args.generations)
 
     pop.save_checkpoint("checkpoint")
 
