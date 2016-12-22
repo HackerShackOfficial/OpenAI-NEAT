@@ -1,6 +1,6 @@
 # Gym Setup Guide
 
-## Installation Guide
+### Installation Guide
 First, make sure to follow the install instructions for OpenAI Gym at this [link](https://gym.openai.com/docs).
 
 You'll need to have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [pip](https://pip.pypa.io/en/stable/installing/) installed on your machine.
@@ -10,7 +10,7 @@ Next, make sure to install the proper python packages for this project.
 pip install scipy neat-python argparse
 ```
 
-## Running the Program
+### Running the Program
 
 There are two files used to solve the gym environment: `gym_config` and `gym_solver.py`. `gym_config` contains the config for the neuroevolution process and `gym_solver.py` is the program the creates the neural networks and solves the game. You will need to adjust parameters in both to solve a game. 
 
@@ -30,10 +30,15 @@ There will be a variable for a game name. This can be any game on the [OpenAI Gy
 To run the program, navigate to the project's directory in your terminal. This will be the same folder you cloned into (OpenAI-Neat). There are several different parameters that you can run the program with.
 
 `--max-steps`: The max number of steps to take per genome (timeout)
+
 `--episodes`: The number of times to run a single genome. This takes the average fitness score over all episodes for one genome
+
 `--render`: Renders the game while the algorithm is learning
+
 `--generations`: The number of generations to evolve the network
+
 `--checkpoint`: Uses a checkpoint to start the simulation
+
 `--num-cores`: The number cores on your computer for parallel execution (not in `--render` mode)
 
 To run the simulation, execute this command:
@@ -43,7 +48,7 @@ python gym_solver.py --max-steps=1000 --episodes=10 --generations=50 --render
 ```
 This tells the program to run 50 generations with 10 episodes per species in the population and render the game while the algorithm is learning. 
 
-## Editing Parameters
+### Editing Parameters
 If you want to change the game, you will need to edit a few parameters. As an example, let's say we want to play Pacman. In order to play Atari games, we must use the ram version. Currently only ram versions are compatible with my program. On the Atari [page](https://gym.openai.com/envs#atari), scroll down and find the name of the ram version of Pacman (`MsPacman-ram-v0`).
 
 Open the `gym_solver.py` file and edit the `game_name` parameter so that it is `'MsPacman-ram-v0'`. 
@@ -83,7 +88,7 @@ python gym_solver.py --episodes=3 --generations=100 --num-cores=8 --max-steps=10
 
 It will take a few hours to simulate this game.
 
-## Starting from a Checkpoint
+### Starting from a Checkpoint
 
 My program also gives you the ability to continue a simulation after it finishes. When your simulation finishes, it will generate a `checkpoint` file. If you start a new simulation on the same game, you can use this checkpoint file to pick up where your simulation left off. In the Pacman example, after my simulation finishes, I can run:
 
@@ -98,6 +103,68 @@ First, make sure to follow the installation guide for gym (above).
 
 Then, make sure you follow the installation instructions for universe at this [link](https://github.com/openai/universe#installation).
 
-## Running the Program
+### Running the Program
 
-_TODO_
+There are two files that are used to solve universe environments: `universe_config` and `universe_solver.py`. 
+
+You can run the simulation with the same parameters as `gym_solver`
+
+`--max-steps`: The max number of steps to take per genome (timeout)
+
+`--episodes`: The number of times to run a single genome. This takes the average fitness score over all episodes for one genome
+
+`--render`: Renders the game while the algorithm is learning
+
+`--generations`: The number of generations to evolve the network
+
+`--checkpoint`: Uses a checkpoint to start the simulation
+
+`--num-cores`: The number cores on your computer for parallel execution (not in `--render` mode)
+
+`universe_solver.py` is initially setup to run with `flashgames.DriftRunners-v0`. You can run it with the following arguments:
+
+```shell
+python universe_solver.py --max-steps=10000 --generations=50 --render
+```
+### Simulating Other Games
+
+You can also modify the program to run with any universe [environment](https://universe.openai.com/envs#flash_games).
+
+Open up the `universe_solver.py` file. There is a section at the top with parameters that should be modified.
+
+```
+### User Params ###
+
+# The name of the game to solve
+game_name = 'flashgames.DriftRunners-v0'
+
+# Change these to define the available actions in the game
+action_sheet = [('KeyEvent', 'ArrowUp'), ('KeyEvent', 'ArrowLeft'), ('KeyEvent', 'ArrowRight')]
+
+# Rules for actions that can't be taken at the same time
+rules = [['ArrowLeft', 'ArrowRight'], ['ArrowUp', 'ArrowDown']]
+
+### End User Params ###
+```
+
+`game_name` should be changed to the name of the game you want to simulate.
+
+`action_sheet` holds all of the actions that can be taken in the game. A list of actions can be found [here](https://github.com/openai/universe/blob/master/universe/vncdriver/constants.py)
+
+`rules` is an array of rules which are basically actions that can't be taken at the same time during one step. For example, the left and right key in a racing game cannot be pressed at the same time. 
+
+Adjust these paramters according to the game enviroment you choose.
+
+Next, open the `universe_config` and edit
+```
+output_nodes         = 3
+```
+to be the length of the action sheet array.
+
+Also edit 
+```
+max_fitness_threshold   = 6000
+```
+to an appropriate target fitness score.
+
+*Note* - `universe_solver.py` creates a checkpoint file like `gym_solver.py`
