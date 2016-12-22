@@ -7,11 +7,21 @@ from scipy import ndimage
 from neat import nn, population, statistics, parallel
 
 
-#action_sheet = [('KeyEvent', 'ArrowUp'), ('KeyEvent', 'ArrowDown'), ('KeyEvent', 'ArrowLeft'),
-#                ('KeyEvent', 'ArrowRight'), ('KeyEvent', 'space')]
+### User Params ###
 
+# Change these to define the available actions in the game
 action_sheet = [('KeyEvent', 'ArrowUp'), ('KeyEvent', 'ArrowLeft'), ('KeyEvent', 'ArrowRight')]
+
+# Rules for actions that can't be taken at the same time
 rules = [['ArrowLeft', 'ArrowRight'], ['ArrowUp', 'ArrowDown']]
+
+### End User Params ###
+
+
+""" Sample action sheet
+action_sheet = [('KeyEvent', 'ArrowUp'), ('KeyEvent', 'ArrowDown'), ('KeyEvent', 'ArrowLeft'),
+                ('KeyEvent', 'ArrowRight'), ('KeyEvent', 'space')]
+"""
 
 
 parser = argparse.ArgumentParser(description='OpenAI Gym Solver')
