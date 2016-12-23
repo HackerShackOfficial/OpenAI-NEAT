@@ -1,4 +1,8 @@
-# Gym Setup Guide
+# OpenAI-Neat
+
+Watch the original video [here](https://youtu.be/o1_SkiEAjmA)
+
+## Gym Setup Guide
 
 ### Installation Guide
 First, make sure to follow the install instructions for OpenAI Gym at this [link](https://gym.openai.com/docs).
@@ -97,7 +101,7 @@ python gym_solver.py --episodes=3 --generations=100 --num-cores=8 --max-steps=10
 ```
 to simulate another 100 generations. At the end of this simulation, another checkpoint file will be generated. 
 
-# Universe Setup Guide
+## Universe Setup Guide
 
 First, make sure to follow the installation guide for gym (above).
 
