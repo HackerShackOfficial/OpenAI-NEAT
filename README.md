@@ -11,7 +11,7 @@ You'll need to have [git](https://git-scm.com/book/en/v2/Getting-Started-Install
 
 Next, make sure to install the proper python packages for this project.
 ```shell
-pip install scipy neat-python argparse
+pip install scipy neat-python==0.8 argparse
 ```
 
 ### Running the Program
